@@ -1,9 +1,11 @@
 import axios from "axios";
 
-const baseURL = import.meta.env.VITE_BACKEND_URL;;
+// For Production
+// const baseURL = import.meta.env.VITE_BACKEND_URL;;
 
 const API = axios.create({
-  baseURL: baseURL,
+  // baseURL: baseURL, // For Production
+  baseURL: "/api", // For Development
   headers: {
     "Content-Type": "application/json",
   },
