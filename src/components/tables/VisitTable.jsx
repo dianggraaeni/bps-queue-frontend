@@ -1,8 +1,7 @@
 import React, { useState, useMemo } from "react";
-import { updateVisit } from "../../service/api/api";
+import { updateVisit, getAllGuests, getVisitByCategory } from "../../service/api/api";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { ToastContainer, toast } from "react-toastify";
-import { getAllGuests, getVisitByCategory } from "../../service/api/api";
 import "react-toastify/dist/ReactToastify.css";
 
 const fixedCategories = [
@@ -42,6 +41,12 @@ const VisitTable = () => {
   const queryClient = useQueryClient();
   const [selectedCategory, setSelectedCategory] = useState("Semua");
 
+  const [detailModal, setDetailModal] = useState({
+    show: false,
+    content: "",
+    label: "",
+  });
+
   const {
     data: categoryData = {},
     isLoading: loadingVisits,
@@ -51,7 +56,7 @@ const VisitTable = () => {
       const res = await getVisitByCategory();
       return res.data;
     },
-    staleTime: 1000 * 60 * 2, // 2 menit
+    staleTime: 1000 * 60 * 2,
   });
 
   const {
@@ -112,7 +117,6 @@ const VisitTable = () => {
       toast.success(`Tamu "${visit.guest_name}" telah ditandai hadir.`);
     } catch (error) {
       toast.error(`Gagal menandai kehadiran tamu "${visit.guest_name}".`);
-      // Rollback
       queryClient.setQueryData(["visitsByCategory"], previousData);
     }
   };
@@ -130,9 +134,11 @@ const VisitTable = () => {
               bg-transparent outline-none border-none shadow-none
               after:content-[''] after:absolute after:left-1/2 after:-translate-x-1/2 after:bottom-0 after:h-[3px]
               after:bg-[#00AEEF] after:rounded-full after:transition-all after:duration-300
-              ${selectedCategory === category
-                ? "text-[#00AEEF] font-bold after:w-full"
-                : "text-gray-700 after:w-0 hover:after:w-full hover:text-[#00AEEF]"}
+              ${
+                selectedCategory === category
+                  ? "text-[#00AEEF] font-bold after:w-full"
+                  : "text-gray-700 after:w-0 hover:after:w-full hover:text-[#00AEEF]"
+              }
             `}
           >
             {category}
@@ -175,13 +181,61 @@ const VisitTable = () => {
                   return (
                     <tr key={v.visit_id} className="hover:bg-gray-50">
                       <td className="px-6 py-4 text-sm whitespace-nowrap">{index + 1}</td>
-                      <td className="px-6 py-4 text-sm whitespace-nowrap">{v.guest_name}</td>
-                      <td className="px-6 py-4 text-sm whitespace-nowrap">{v.target_service}</td>
-                      <td className="px-6 py-4 text-sm whitespace-nowrap">{v.purpose}</td>
+
+                      {/* Nama Tamu */}
+                      <td
+                        className="px-6 py-4 text-sm text-[#222] cursor-pointer hover:text-[#F7941D] max-w-[200px]"
+                        onClick={() =>
+                          setDetailModal({
+                            show: true,
+                            content: v.guest_name,
+                            label: "Nama Tamu",
+                          })
+                        }
+                      >
+                        <div className="overflow-hidden text-ellipsis whitespace-nowrap">
+                          {v.guest_name}
+                        </div>
+                      </td>
+
+                      {/* Tujuan */}
+                      <td
+                        className="px-6 py-4 text-sm text-[#222] cursor-pointer hover:text-[#F7941D] max-w-[200px]"
+                        onClick={() =>
+                          setDetailModal({
+                            show: true,
+                            content: v.target_service,
+                            label: "Tujuan",
+                          })
+                        }
+                      >
+                        <div className="overflow-hidden text-ellipsis whitespace-nowrap">
+                          {v.target_service}
+                        </div>
+                      </td>
+
+                      {/* Catatan */}
+                      <td
+                        className="px-6 py-4 text-sm text-[#222] cursor-pointer hover:text-[#F7941D] max-w-[200px]"
+                        onClick={() =>
+                          setDetailModal({
+                            show: true,
+                            content: v.purpose,
+                            label: "Catatan",
+                          })
+                        }
+                      >
+                        <div className="overflow-hidden text-ellipsis whitespace-nowrap">
+                          {v.purpose}
+                        </div>
+                      </td>
+
                       <td className="px-6 py-4 text-sm whitespace-nowrap">
                         {tanggal} <br /> {waktu}
                       </td>
-                      <td className="px-6 py-4 text-sm whitespace-nowrap">{v.queue_number ?? "-"}</td>
+                      <td className="px-6 py-4 text-sm whitespace-nowrap">
+                        {v.queue_number ?? "-"}
+                      </td>
                       <td className={`px-6 py-4 text-sm whitespace-nowrap ${statusColorClass}`}>
                         {v.mark.charAt(0).toUpperCase() + v.mark.slice(1)}
                       </td>
@@ -201,6 +255,41 @@ const VisitTable = () => {
               )}
             </tbody>
           </table>
+        </div>
+      )}
+
+      {/* Modal Detail */}
+      {detailModal.show && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-xl p-6 shadow-lg max-w-lg w-full mx-4">
+            <div className="mb-4">
+              <h3 className="text-lg font-semibold text-[#F7941D] mb-2">
+                {detailModal.label}
+              </h3>
+              <div className="flex items-center gap-3 bg-gray-50 p-3 rounded-lg">
+                <p className="text-gray-700 text-sm flex-1 break-all">
+                  {detailModal.content}
+                </p>
+                <button
+                  onClick={() => {
+                    navigator.clipboard.writeText(detailModal.content);
+                    toast.success("Teks berhasil disalin!");
+                  }}
+                  className="px-3 py-2 bg-[#F7941D] text-white rounded-lg hover:bg-[#e67a10] transition-colors text-xs font-medium"
+                >
+                  Salin
+                </button>
+              </div>
+            </div>
+            <div className="flex justify-end">
+              <button
+                onClick={() => setDetailModal({ show: false, content: "", label: "" })}
+                className="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition-colors text-sm font-medium"
+              >
+                Tutup
+              </button>
+            </div>
+          </div>
         </div>
       )}
 

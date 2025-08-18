@@ -5,7 +5,7 @@ import { createRoot } from "react-dom/client";
 import html2pdf from "html2pdf.js";
 
 const CetakButtonAntrian = ({ queueData, className = "" }) => {
-  const [format, setFormat] = useState("a4");
+  const [format, setFormat] = useState("struk");
 
   const handlePrint = async () => {
     try {
@@ -72,8 +72,8 @@ const CetakButtonAntrian = ({ queueData, className = "" }) => {
         onChange={(e) => setFormat(e.target.value)}
         className="w-full px-3 py-2 rounded border border-gray-300"
       >
-        <option value="a4">Ukuran A4</option>
         <option value="struk">Struk Kecil (80x150 mm)</option>
+        <option value="a4">Ukuran A4</option>
       </select>
       <button
         onClick={handlePrint}
