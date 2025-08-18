@@ -47,9 +47,6 @@ const Export = () => {
       const data = response.data || [];
       setFiles(data);
       localStorage.setItem(CACHE_KEY, JSON.stringify({ data, timestamp: now }));
-    } catch (error) {
-      console.error("Gagal mengambil data exports:", error);
-      toast.error("Gagal mengambil data exports.");
     } finally {
       setLoading(false);
     }

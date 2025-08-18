@@ -5,6 +5,8 @@ import ExportLogButton from "../../components/export/ExportLogButton"
 import SidebarAdmin from "../../components/layout/SidebarAdmin"
 import ExpiredLogConfig from "../../components/core/ExpiredLogConfig"
 import CSLogsTable from "../../components/tables/CSLogsTable"
+import { ToastContainer, toast } from "react-toastify"
+import "react-toastify/dist/ReactToastify.css"
 
 const CSLogs = () => {
   const navigate = useNavigate()
@@ -19,7 +21,17 @@ const CSLogs = () => {
       if (err.response?.status === 403) navigate("/403")
       else if (err.response?.status === 405) navigate("/405")
       else if (err.response?.status === 500) navigate("/500")
-      else alert("Gagal mengambil log CS. Silakan coba lagi.")
+      else {
+        toast.error("Gagal mengambil log CS. Silakan coba lagi.", {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        })
+      }
     },
   })
 
@@ -40,6 +52,9 @@ const CSLogs = () => {
         <ExpiredLogConfig refetchKey="cslogs" />
 
         <CSLogsTable logs={logs} isLoading={isLoading} />
+
+        {/* Toast notification */}
+        <ToastContainer position="top-right" autoClose={3000} hideProgressBar />
       </main>
     </div>
   )
