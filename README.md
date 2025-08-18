@@ -2,14 +2,24 @@
 Aplikasi frontend website buku tamu dirancang untuk memudahkan pengelolaan data kunjungan tamu secara digital. Aplikasi ini membantu mengoptimalkan proses penerimaan tamu, pencatatan data, hingga pelaporan.
 
 ## Fitur Utama
-- Export Data: mengunduh data yang tercatat ke dalam format Excel
-- Filter Category: menyaring data tamu berdasarkan kategori tertentu
-- Queue Number: sistem antrean digital untuk mengelola alur kedatangan tamu
-- CSLog: pencatatan riwayat interaksi atau status penanganan tamu oleh tim layanan
-- Visit Table: menampilkan daftar kunjungan tamu dalam format tabel yang mudah dibaca
-- All Guest Data: Menyediakan tampilan komprehensif dari seluruh data tamu yang telah terdaftar
-- Delete Guest Data: menghapus data tamu yang tidak lagi relevan atau salah input dari database
-- Reset Queue: memberikan kontrol penuh untuk mengatur ulang atau mengosongkan semua nomor antrean yang sedang aktif
+- <strong>Form Biodata</strong>: Halaman pendaftaran tamu untuk mengisi data diri dan tujuan kunjungan.
+- <strong>Nomor Antrian Pelayanan Statistik Terpadu</strong>: Mendapatkan nomor antrean khusus untuk layanan statistik.
+- <strong>Antrian Kunjungan Dinas</strong>: Antrean khusus tanpa nomor untuk kunjungan dari instansi lain.
+- <strong>Cetak Fisik Nomor Antrian</strong>: Opsi untuk mencetak nomor antrean yang didapat.
+- <strong>Konfirmasi Kunjungan</strong>: Menampilkan informasi singkat sebagai konfirmasi pendaftaran.
+- <strong>Lihat Kunjungan Tamu</strong>: Menampilkan daftar tamu yang sedang mengantre.
+- <strong>Lihat Semua Tamu</strong>: Melihat daftar lengkap semua data tamu yang pernah berkunjung.
+- <strong>Terima Antrian</strong>: Melayani dan menghapus tamu dari daftar antrean.
+- <strong>Hapus Tamu</strong>: Menghapus data tamu dari database.
+- <strong>CS Logs</strong>: Mencatat seluruh aktivitas CS untuk audit.
+- <strong>Filter Section</strong>: Menyaring data tamu berdasarkan kriteria tertentu.
+- <strong>Download / Export Database</strong>: Mengunduh data kunjungan dan tamu.
+- <strong>Nomor Antrian Tamu</strong>: Menampilkan nomor antrean tamu yang sedang dilayani.
+- <strong>Reset Database (Visit Table)</strong>: Menghapus semua data kunjungan secara manual.
+- <strong>Countdown Reset Database</strong>: Menampilkan hitungan mundur sebelum database kunjungan direset otomatis.
+- <strong>Error Handlers</strong>: Sistem untuk menangani kesalahan dan memberikan pesan yang jelas.
+- <strong>Penghapusan Log Berkala</strong>: Menghapus data log aktivitas secara otomatis untuk menjaga kinerja database.
+- <strong>Autentifikasi Token</strong>: Mekanisme keamanan yang memvalidasi akses ke API menggunakan token.
 
 ## Teknologi yang Digunakan
 ![JavaScript](https://img.shields.io/badge/JavaScript-1E293B?style=for-the-badge&logo=javascript&logoColor=FACC15)
@@ -67,6 +77,7 @@ FrontEnd-QueuePlatformBPS/
 │   ├── styles/           # Folder untuk file styling global
 │   ├── utils/            # Folder untuk fungsi utilitas
 │   └── routes.jsx        # File yang mendefinisikan rute-rute navigasi aplikasi
+├── .env.production       # Environtment Production (URL BackEnd)
 ├── .eslintrc.cjs         # Konfigurasi ESLint
 ├── .gitignore            # File untuk menentukan file/folder yang diabaikan oleh Git
 ├── index.html            # File HTML utama
