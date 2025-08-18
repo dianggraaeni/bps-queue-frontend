@@ -6,7 +6,7 @@ export default defineConfig({
   server: {
     proxy: {
       '/api': {
-        target: 'https://bukutamuapi.pahlawan140.com',
+        target: 'http://127.0.0.1:5000',
         changeOrigin: true,
         secure: false,
       },
