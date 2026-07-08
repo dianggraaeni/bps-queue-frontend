@@ -40,6 +40,8 @@ const Kunjungan = () => {
   // Countdown updater
   useEffect(() => {
     if (!nextReset) return;
+    // Set immediately so we don't see 0:0:0 for the first second
+    setCountdown(calculateCountdown(nextReset));
     const interval = setInterval(() => {
       setCountdown(calculateCountdown(nextReset));
     }, 1000);
